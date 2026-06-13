@@ -1,0 +1,10 @@
+Package: fcitx5-hazkey
+Version: @VERSION@
+Architecture: @ARCH@
+Maintainer: Unofficial Package <invalid@example.invalid>
+Installed-Size: @INSTALLED_SIZE@
+Section: utils
+Priority: optional
+Depends: @DEPENDS@
+Suggests: vulkan-icd
+Description: Japanese input method for fcitx5, powered by azooKey engine

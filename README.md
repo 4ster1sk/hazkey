@@ -18,6 +18,8 @@ Hazkey input method for fcitx5
 
 現在AURと[debianパッケージ](https://github.com/7ka-Hiira/fcitx5-hazkey/releases/latest)が利用できます。
 
+CI では Ubuntu 向け（`ubuntu-22.04` / `ubuntu-24.04`）と Debian 向け（`debian-12`）の `.deb` を別々に生成します。Debian では Ubuntu 24.04 由来の `t64` 依存名を持つパッケージを解決できないため、Debian 12 では `*-debian-12_amd64.deb` を利用してください。
+
 ## ビルド
 
 詳細は[ドキュメントのビルドページを参照してください](https://hazkey.hiira.dev/docs/development/build)。
