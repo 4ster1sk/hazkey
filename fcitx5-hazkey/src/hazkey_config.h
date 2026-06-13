@@ -19,6 +19,9 @@ FCITX_CONFIGURATION(HazkeyEngineConfig,
                     Option<bool> showTabToSelect{
                         this, "showTabToSelect",
                         _("Show [Press Tab to Select] indicator"), true};
+                    Option<bool> enableNumberKeyCandidateSelection{
+                        this, "enableNumberKeyCandidateSelection",
+                        _("Enable number key candidate selection"), true};
                     ExternalOption openHazkeySettings{
                         this, "openHazkeySettings", _("Open Hazkey Settings"),
                         stringutils::concat("hazkey-settings")};);

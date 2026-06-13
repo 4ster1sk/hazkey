@@ -22,3 +22,6 @@ msgstr ""
 
 msgid "Show [Press Tab to Select] indicator"
 msgstr ""
+
+msgid "Enable number key candidate selection"
+msgstr ""

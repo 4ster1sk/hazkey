@@ -22,3 +22,6 @@ msgstr "[Tabキーで選択]"
 
 msgid "Show [Press Tab to Select] indicator"
 msgstr "[Tabキーで選択] インジケーターを表示する"
+
+msgid "Enable number key candidate selection"
+msgstr "数字キーで候補を選択する"

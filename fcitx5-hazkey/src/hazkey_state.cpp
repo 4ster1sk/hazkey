@@ -210,7 +210,7 @@ void HazkeyState::preeditKeyEvent(
 
 bool HazkeyState::isAltDigitKeyEvent(const KeyEvent& event) {
     auto key = event.key();
-    if (key.states() == KeyState::Alt && key.sym() >= FcitxKey_1 &&
+    if (key.states().test(KeyState::Alt) && key.sym() >= FcitxKey_1 &&
         key.sym() <= FcitxKey_9) {
         return true;
     }
@@ -221,8 +221,15 @@ void HazkeyState::candidateKeyEvent(
     KeyEvent& event, std::shared_ptr<HazkeyCandidateList> candidateList) {
     FCITX_DEBUG() << "HazkeyState candidateKeyEvent";
 
+    const bool numberKeySelectionEnabled =
+        engine_->config().enableNumberKeyCandidateSelection.value();
+
     auto key = event.key();
     auto keysym = key.sym();
+    const bool isDigitKey =
+        keysym >= FcitxKey_0 && keysym <= FcitxKey_9;
+    const bool isKeypadDigit =
+        keysym >= FcitxKey_KP_0 && keysym <= FcitxKey_KP_9;
 
     std::vector<std::string> preedit;
     switch (keysym) {
@@ -268,6 +275,7 @@ void HazkeyState::candidateKeyEvent(
             break;
         case FcitxKey_Shift_L:
         case FcitxKey_Shift_R:
+            break;
 
         default:
             if (event.key().states() == KeyState::Ctrl) {
@@ -275,7 +283,8 @@ void HazkeyState::candidateKeyEvent(
                     return event.filter();
                 }
             } else if (isAltDigitKeyEvent(event) ||
-                       key.checkKeyList(defaultSelectionKeys)) {
+                       (numberKeySelectionEnabled &&
+                        key.checkKeyList(defaultSelectionKeys))) {
                 auto localIndex = isAltDigitKeyEvent(event)
                                       ? keysym - FcitxKey_1
                                       : key.keyListIndex(defaultSelectionKeys);
@@ -283,7 +292,9 @@ void HazkeyState::candidateKeyEvent(
                     candidateList->setCursorIndex(localIndex);
                     candidateCompleteHandler(candidateList);
                 }
-            } else if (isInputableEvent(event)) {
+            } else if (isInputableEvent(event) ||
+                       (!numberKeySelectionEnabled &&
+                        (isDigitKey || isKeypadDigit))) {
                 preedit_.commitPreedit();
                 reset();
                 engine_->server().inputChar(Key::keySymToUTF8(keysym));
@@ -434,7 +445,13 @@ bool HazkeyState::showCandidateList(bool isSuggest) {
     auto candidateResult =
         std::make_unique<HazkeyCandidateList>(std::move(response.candidates()));
 
-    candidateResult->setSelectionKey(defaultSelectionKeys);
+    const bool numberKeySelectionEnabled =
+        engine_->config().enableNumberKeyCandidateSelection.value();
+    if (numberKeySelectionEnabled) {
+        candidateResult->setSelectionKey(defaultSelectionKeys);
+    } else {
+        candidateResult->setSelectionKey({});
+    }
 
     ic_->inputPanel().reset();
 
