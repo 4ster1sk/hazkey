@@ -24,6 +24,20 @@ CI では Ubuntu 向け（`ubuntu-22.04` / `ubuntu-24.04`）と Debian 向け（
 
 詳細は[ドキュメントのビルドページを参照してください](https://hazkey.hiira.dev/docs/development/build)。
 
+### Dev Container（推奨）
+
+VS Code / Cursor から **Reopen in Container** で開くと、Ubuntu 24.04 ベースの開発環境が自動構築されます。Swift 6.2、CMake 4.1、Qt6、fcitx5、Protobuf などの依存関係はコンテナ内に含まれます。
+
+初回セットアップでは submodule の初期化と CMake の configure が自動実行されます。ビルドは次を実行してください。
+
+```sh
+.devcontainer/scripts/build.sh
+```
+
+デフォルトは `Debug` ビルドかつ `GGML_VULKAN=OFF` です。変更する場合は環境変数 `HAZKEY_BUILD_TYPE` / `HAZKEY_GGML_VULKAN` を指定してください。
+
+Dev Container の対象はソース取得後のビルドまでです。GUI 起動確認、fcitx5 へのインストール、Wayland/X11 連携はスコープ外です。
+
 ### 依存関係
 
 - Swift >= 6.1
@@ -36,7 +50,7 @@ CI では Ubuntu 向け（`ubuntu-22.04` / `ubuntu-24.04`）と Debian 向け（
 
 ### ソースビルド・インストール手順
 
-ninjaを利用します。
+ホスト Linux に直接 toolchain を入れる場合は、上記の依存関係を満たしたうえで次を実行します。
 
 ```sh
 git clone --recursive https://github.com/7ka-Hiira/hazkey.git
