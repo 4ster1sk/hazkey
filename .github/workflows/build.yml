@@ -190,13 +190,6 @@ jobs:
           test -d "$GITHUB_WORKSPACE/hazkey-settings"
           test -f "$GITHUB_WORKSPACE/hazkey-settings/CMakeLists.txt"
 
-          ui_file="$(find "$GITHUB_WORKSPACE/hazkey-settings" -maxdepth 5 -name 'mainwindow.ui' -print -quit)"
-          if [ -n "$ui_file" ]; then
-            sed -i "s/Qt::Orientation::/Qt::/g" "$ui_file"
-          else
-            echo "mainwindow.ui not found, skipping sed"
-          fi
-
           cmake \
             -S "$GITHUB_WORKSPACE/hazkey-settings" \
             -B "$GITHUB_WORKSPACE/hazkey-settings/build" \
